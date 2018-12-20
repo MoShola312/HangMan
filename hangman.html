@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html>
+
+<p>Press any key to get started!</p>
+<p>Wins: <span id="wins"> 0 </span></p>
+<p>Current Word</p>
+<p id="text"></p>
+<p>Number Of Guesses Remaining: <span id="guess"> </span></p>
+<p>Letters Already Guessed: <span id="wrong"> </span> </p>
+
+
+
+<script>
+var str = ["c", "o", "m", "i", "c", "s"];
+var blnk_str = ["_", "_", "_", "_", "_", "_"];
+var game2 = ["g", "o", "h", "a", "n"];
+var blnk_game2 = ["_", "_", "_", "_", "_"];
+var wrongGuess = [];
+var numberOfGuesses = 9;
+var gameOver = false;
+var numOfWins = 0;
+var plays = 0;
+
+
+var wins = document.querySelector("#wins")
+var answer = document.querySelector("#answer")
+var guess = document.getElementById("guess")
+var input = document.querySelector("input")
+
+document.getElementById("text").innerHTML = blnk_str.join(" ");
+
+document.onkeydown= function(event) {
+  //changes the key press from a numeric code to a character
+  var key_press = String.fromCharCode(event.keyCode);
+  //makes that character lower case
+  var key_press = key_press.toLowerCase();
+
+  if (numOfWins == 0 || numberOfGuesses == 0){
+    isWrong(str, key_press, wrongGuess);
+    isCorrect(str, blnk_str, key_press);
+
+  }
+
+  if (numOfWins == 1 || numberOfGuesses == 0){
+    isWrong(game2, key_press, wrongGuess);
+    isCorrect(game2, blnk_game2, key_press);
+    console.log("game 2")
+  }
+}
+
+//checks if the keycode matches the correct answerh
+function isCorrect(answer, blanks, user_input) {
+  for(i = 0; i < answer.length; i++){
+    if(answer[i] == user_input){
+      blanks[i] = answer[i];
+      text.textContent= blanks.join(" ");
+      //checks to see if the array of blanks was replaced
+      //with the correct answer, and updates the wins count
+      if(blanks.toString() == answer.toString()){
+        numOfWins++
+        console.log("numOfWins " + numOfWins)
+        wins.textContent = numOfWins;
+        return true;
+      }
+    }
+  }
+}
+
+
+//checks if the keycode is incorrect
+//displays the wrong letters
+function isWrong(answer, user_input, wrong) {
+  if(answer.indexOf(user_input)==-1){
+      wrongGuess.push(user_input);
+      document.getElementById("wrong").innerHTML = wrongGuess;
+      //updates the number of tries
+      guess.innerHTML = numberOfGuesses--;
+      console.log("wrong guess "+ wrongGuess);
+      console.log("NOG " + numberOfGuesses);
+      if(numberOfGuesses == 0){
+        return;
+      }
+    }
+  }
+
+</script>
+</html>
