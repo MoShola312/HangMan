@@ -22,6 +22,8 @@ var numberOfGuesses = 9;
 var gameOver = false;
 var numOfWins = 0;
 var plays = 0;
+
+//picks a random word
 var word = words[Math.floor(Math.random() * words.length)]
 
 
@@ -53,7 +55,6 @@ document.onkeydown= function(event) {
   // }
 }
 
-//picks a random word
 //sets up the blanks
 function makeBlanks(){
   for(j=0; j<word.length; j++){
