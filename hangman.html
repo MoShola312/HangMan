@@ -11,15 +11,18 @@
 
 
 <script>
-var str = ["c", "o", "m", "i", "c", "s"];
-var blnk_str = ["_", "_", "_", "_", "_", "_"];
-var game2 = ["g", "o", "h", "a", "n"];
-var blnk_game2 = ["_", "_", "_", "_", "_"];
+var words = ["comics", "ironman", "awesome", "playstation"]
+// var str = ["c", "o", "m", "i", "c", "s"];
+// var blnk_str = ["_", "_", "_", "_", "_", "_"];
+// var game2 = ["g", "o", "h", "a", "n"];
+// var blnk_game2 = ["_", "_", "_", "_", "_"];
+var blanks = []
 var wrongGuess = [];
 var numberOfGuesses = 9;
 var gameOver = false;
 var numOfWins = 0;
 var plays = 0;
+var word = words[Math.floor(Math.random() * words.length)]
 
 
 var wins = document.querySelector("#wins")
@@ -27,7 +30,7 @@ var answer = document.querySelector("#answer")
 var guess = document.getElementById("guess")
 var input = document.querySelector("input")
 
-document.getElementById("text").innerHTML = blnk_str.join(" ");
+document.getElementById("text").innerHTML = makeBlanks()
 
 document.onkeydown= function(event) {
   //changes the key press from a numeric code to a character
@@ -35,17 +38,30 @@ document.onkeydown= function(event) {
   //makes that character lower case
   var key_press = key_press.toLowerCase();
 
-  if (numOfWins == 0 || numberOfGuesses == 0){
-    isWrong(str, key_press, wrongGuess);
-    isCorrect(str, blnk_str, key_press);
 
-  }
 
-  if (numOfWins == 1 || numberOfGuesses == 0){
-    isWrong(game2, key_press, wrongGuess);
-    isCorrect(game2, blnk_game2, key_press);
-    console.log("game 2")
+  // if (numOfWins == 0 || numberOfGuesses == 0){
+    isWrong(word, key_press, wrongGuess);
+    isCorrect(word, blanks, key_press);
+  //
+  // }
+  //
+  // if (numOfWins == 1 || numberOfGuesses == 0){
+  //   isWrong(game2, key_press, wrongGuess);
+  //   isCorrect(game2, blnk_game2, key_press);
+  //   console.log("game 2")
+  // }
+}
+
+//picks a random word
+//sets up the blanks
+function makeBlanks(){
+  for(j=0; j<word.length; j++){
+    blanks[j] = "_";
+    console.log(word + word.length)
+    console.log(blanks)
   }
+  return blanks.join(" ")
 }
 
 //checks if the keycode matches the correct answerh
@@ -56,16 +72,18 @@ function isCorrect(answer, blanks, user_input) {
       text.textContent= blanks.join(" ");
       //checks to see if the array of blanks was replaced
       //with the correct answer, and updates the wins count
-      if(blanks.toString() == answer.toString()){
+
+      blanks2 = blanks.join("");
+      console.log("blanks2 " + blanks2)
+      console.log("answer" + answer)
+      if(blanks2 == answer){
         numOfWins++
         console.log("numOfWins " + numOfWins)
         wins.textContent = numOfWins;
-        return true;
       }
     }
-  }
+  } return false;
 }
-
 
 //checks if the keycode is incorrect
 //displays the wrong letters
@@ -78,7 +96,7 @@ function isWrong(answer, user_input, wrong) {
       console.log("wrong guess "+ wrongGuess);
       console.log("NOG " + numberOfGuesses);
       if(numberOfGuesses == 0){
-        return;
+        return false;
       }
     }
   }
