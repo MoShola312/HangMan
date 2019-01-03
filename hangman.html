@@ -3,6 +3,7 @@
 
 <p>Press any key to get started!</p>
 <p>Wins: <span id="wins"> 0 </span></p>
+<p>Losses: <span id="loss"> 0 </span></p>
 <p>Current Word</p>
 <p id="text"></p>
 <p>Number Of Guesses Remaining: <span id="guess"> </span></p>
@@ -21,6 +22,7 @@ var wrongGuess = [];
 var numberOfGuesses = 9;
 var gameOver = false;
 var numOfWins = 0;
+var numOfLosses = 0;
 var plays = 0;
 
 //picks a random word
@@ -28,11 +30,12 @@ var word = words[Math.floor(Math.random() * words.length)]
 
 
 var wins = document.querySelector("#wins")
+var loss = document.querySelector("#loss")
 var answer = document.querySelector("#answer")
-var guess = document.getElementById("guess")
+var guess = document.getElementById("#guess")
 var input = document.querySelector("input")
 
-document.getElementById("text").innerHTML = makeBlanks()
+
 
 document.onkeydown= function(event) {
   //changes the key press from a numeric code to a character
@@ -56,31 +59,38 @@ document.onkeydown= function(event) {
 }
 
 //sets up the blanks
-function makeBlanks(){
+// function makeBlanks(){
   for(j=0; j<word.length; j++){
     blanks[j] = "_";
+    document.getElementById("guess").innerHTML = numberOfGuesses;
+
+
     console.log(word + word.length)
     console.log(blanks)
   }
-  return blanks.join(" ")
-}
-
-//checks if the keycode matches the correct answerh
+//   return blanks.join(" ")
+// }
+document.getElementById("text").innerHTML = blanks.join(" ")
+//checks if the keycode matches the correct answer
 function isCorrect(answer, blanks, user_input) {
   for(i = 0; i < answer.length; i++){
     if(answer[i] == user_input){
       blanks[i] = answer[i];
-      text.textContent= blanks.join(" ");
+      text.textContent = blanks.join(" ");
       //checks to see if the array of blanks was replaced
       //with the correct answer, and updates the wins count
 
       blanks2 = blanks.join("");
       console.log("blanks2 " + blanks2)
-      console.log("answer" + answer)
+      console.log("answer " + answer)
+
+      document.getElementById("guess").innerHTML = numberOfGuesses;
+
       if(blanks2 == answer){
         numOfWins++
         console.log("numOfWins " + numOfWins)
         wins.textContent = numOfWins;
+        alert("You Win!");
       }
     }
   } return false;
@@ -90,16 +100,22 @@ function isCorrect(answer, blanks, user_input) {
 //displays the wrong letters
 function isWrong(answer, user_input, wrong) {
   if(answer.indexOf(user_input)==-1){
+
       wrongGuess.push(user_input);
       document.getElementById("wrong").innerHTML = wrongGuess;
       //updates the number of tries
-      guess.innerHTML = numberOfGuesses--;
+      document.getElementById("guess").innerHTML = numberOfGuesses--;
+      // guess.innerHTML = numberOfGuesses--;
       console.log("wrong guess "+ wrongGuess);
+
       console.log("NOG " + numberOfGuesses);
-      if(numberOfGuesses == 0){
-        return false;
+     } if(numberOfGuesses === 0){
+        numOfLosses++;
+        document.getElementById("loss").innerHTML = numOfLosses;
+        alert("You Lose!");
+        return gameOver = true;
       }
-    }
+
   }
 
 </script>
