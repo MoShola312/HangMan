@@ -12,22 +12,14 @@
 
 
 <script>
-var words = ["comics", "ironman", "awesome", "playstation"]
-// var str = ["c", "o", "m", "i", "c", "s"];
-// var blnk_str = ["_", "_", "_", "_", "_", "_"];
-// var game2 = ["g", "o", "h", "a", "n"];
-// var blnk_game2 = ["_", "_", "_", "_", "_"];
+var words = ["comics", "ironman", "awesome", "playstation"];
 var blanks = []
 var wrongGuess = [];
 var numberOfGuesses = 9;
 var gameOver = false;
 var numOfWins = 0;
 var numOfLosses = 0;
-var plays = 0;
-
-//picks a random word
-var word = words[Math.floor(Math.random() * words.length)]
-
+// var plays = 0;
 
 var wins = document.querySelector("#wins")
 var loss = document.querySelector("#loss")
@@ -35,15 +27,15 @@ var answer = document.querySelector("#answer")
 var guess = document.getElementById("#guess")
 var input = document.querySelector("input")
 
+var word = "";
 
+startNewHangManGame();
 
 document.onkeydown= function(event) {
   //changes the key press from a numeric code to a character
   var key_press = String.fromCharCode(event.keyCode);
   //makes that character lower case
   var key_press = key_press.toLowerCase();
-
-
 
   // if (numOfWins == 0 || numberOfGuesses == 0){
     isWrong(word, key_press, wrongGuess);
@@ -58,19 +50,7 @@ document.onkeydown= function(event) {
   // }
 }
 
-//sets up the blanks
-// function makeBlanks(){
-  for(j=0; j<word.length; j++){
-    blanks[j] = "_";
-    document.getElementById("guess").innerHTML = numberOfGuesses;
 
-
-    console.log(word + word.length)
-    console.log(blanks)
-  }
-//   return blanks.join(" ")
-// }
-document.getElementById("text").innerHTML = blanks.join(" ")
 //checks if the keycode matches the correct answer
 function isCorrect(answer, blanks, user_input) {
   for(i = 0; i < answer.length; i++){
@@ -84,39 +64,58 @@ function isCorrect(answer, blanks, user_input) {
       console.log("blanks2 " + blanks2)
       console.log("answer " + answer)
 
-      document.getElementById("guess").innerHTML = numberOfGuesses;
+      // document.getElementById("guess").innerHTML = numberOfGuesses;
 
       if(blanks2 == answer){
         numOfWins++
         console.log("numOfWins " + numOfWins)
         wins.textContent = numOfWins;
         alert("You Win!");
+        startNewHangManGame();
       }
     }
-  } return false;
+  }
+  // return false;
 }
 
 //checks if the keycode is incorrect
 //displays the wrong letters
 function isWrong(answer, user_input, wrong) {
   if(answer.indexOf(user_input)==-1){
-
       wrongGuess.push(user_input);
       document.getElementById("wrong").innerHTML = wrongGuess;
       //updates the number of tries
-      document.getElementById("guess").innerHTML = numberOfGuesses--;
+      numberOfGuesses = numberOfGuesses -1;
+      document.getElementById("guess").innerHTML = numberOfGuesses;
       // guess.innerHTML = numberOfGuesses--;
       console.log("wrong guess "+ wrongGuess);
-
       console.log("NOG " + numberOfGuesses);
      } if(numberOfGuesses === 0){
         numOfLosses++;
         document.getElementById("loss").innerHTML = numOfLosses;
         alert("You Lose!");
-        return gameOver = true;
+        startNewHangManGame();
+        // return gameOver = true;
       }
+}
 
+// Reset Hangman Board
+function startNewHangManGame() {
+  word = words[Math.floor(Math.random() * words.length)]
+  blanks = []
+  wrongGuess = [];
+  numberOfGuesses = 9;
+  gameOver = false;
+  for(j=0; j<word.length; j++){
+    blanks[j] = "_";
+    document.getElementById("guess").innerHTML = numberOfGuesses;
+
+    console.log(word + word.length)
+    console.log(blanks)
   }
+  document.getElementById("text").innerHTML = blanks.join(" ")
+  document.getElementById("wrong").innerHTML = ""
+}
 
 </script>
 </html>
