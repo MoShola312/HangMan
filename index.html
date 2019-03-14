@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+  <title>Hangman</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+</head>
+<body>
+<div>
+  <h1 align=center>DragonBall Z Hangman Game</h1>
+</div>
+<div class="row container">
+<div class="col-sm-6">
+  <h3 id="right"></h3>
+</div>
+</div>
+<div class="row container">
+  <div class="col-sm-6">
+    <img src=" " id="img1" width="250" >
+  </div>
+  <div class="col-sm-6">
+    <p>Press any key to get started!</p>
+    <p>Wins: <span id="wins"> 0 </span></p>
+    <p>Losses: <span id="loss"> 0 </span></p>
+    <p>Current Word</p>
+    <p id="text"></p>
+    <p>Number Of Guesses Remaining: <span id="guess"> </span></p>
+    <p>Letters Already Guessed: <span id="wrong"> </span> </p>
+  </div>
+</div>
+
+
+
+
+<script>
+var words = ["goku", "piccolo", "vegeta", "frieza", "kidbuu", "beerus", "broly",
+"trunks", "gotenks"];
+var blanks = []
+var wrongGuess = [];
+var numberOfGuesses = 9;
+var gameOver = false;
+var numOfWins = 0;
+var numOfLosses = 0;
+// var plays = 0;
+
+var wins = document.querySelector("#wins")
+var loss = document.querySelector("#loss")
+var answer = document.querySelector("#answer")
+var guess = document.getElementById("#guess")
+// var input = document.querySelector("input")
+// var winImage = document.getElementById("#winImage")
+
+var word = "";
+
+startNewHangManGame();
+
+document.onkeydown= function(event) {
+  //changes the key press from a numeric code to a character
+  var key_press = String.fromCharCode(event.keyCode);
+  //makes that character lower case
+  var key_press = key_press.toLowerCase();
+
+  // if (numOfWins == 0 || numberOfGuesses == 0){
+    isWrong(word, key_press, wrongGuess);
+    isCorrect(word, blanks, key_press);
+  //
+  // }
+  //
+  // if (numOfWins == 1 || numberOfGuesses == 0){
+  //   isWrong(game2, key_press, wrongGuess);
+  //   isCorrect(game2, blnk_game2, key_press);
+  //   console.log("game 2")
+  // }
+}
+
+
+//checks if the keycode matches the correct answer
+function isCorrect(answer, blanks, user_input) {
+  for(i = 0; i < answer.length; i++){
+    if(answer[i] == user_input){
+      blanks[i] = answer[i];
+      text.textContent = blanks.join(" ");
+      //checks to see if the array of blanks was replaced
+      //with the correct answer, and updates the wins count
+
+      blanks2 = blanks.join("");
+      console.log("blanks2 " + blanks2)
+      console.log("answer " + answer)
+
+      // document.getElementById("guess").innerHTML = numberOfGuesses;
+
+      if(blanks2 == answer){
+        numOfWins++
+        console.log("numOfWins " + numOfWins)
+        wins.textContent = numOfWins;
+        alert("You Win!");
+        document.getElementById("right").innerHTML=blanks2.toUpperCase();
+        blankImage();
+        startNewHangManGame();
+      }
+    }
+  }
+  // return false;
+}
+//displays the image of the correct word
+function blankImage(){
+  console.log("blankimag " + words)
+  for(var z=0; z < words.length; z++){
+    if(blanks2 == words[z]){
+
+      document.getElementById("img1").setAttribute("src", words[z]+".png");
+    }
+  }
+}
+
+//   if (blanks2=="goku"){
+//     document.getElementById("img1").src= 'goku.jpg'
+//   }
+//   if (blanks2=="piccolo"){
+//     document.getElementById("img1").src= 'piccolo.png'
+//   }
+//   if (blanks2=="vegeta"){
+//     document.getElementById("img1").src= 'vegeta.png'
+//   }
+//   if (blanks2=="frieza"){
+//     document.getElementById("img1").src= 'frieza.png'
+//   }
+//   if (blanks2=="kidbuu"){
+//     document.getElementById("img1").src= 'buu.png'
+//   }
+//   if (blanks2=="beerus"){
+//     document.getElementById("img1").src= 'beerus.png'
+//   }
+//   if (blanks2=="broly"){
+//     document.getElementById("img1").src= 'broly.png'
+//   }
+//   if (blanks2=="trunks"){
+//     document.getElementById("img1").src= 'trunks.png'
+//   }
+// }
+
+//checks if the keycode is incorrect
+//displays the wrong letters
+function isWrong(answer, user_input, wrong) {
+  if(answer.indexOf(user_input)==-1){
+      wrongGuess.push(user_input);
+      document.getElementById("wrong").innerHTML = wrongGuess;
+      //updates the number of tries
+      numberOfGuesses = numberOfGuesses -1;
+      document.getElementById("guess").innerHTML = numberOfGuesses;
+      // guess.innerHTML = numberOfGuesses--;
+      console.log("wrong guess "+ wrongGuess);
+      console.log("NOG " + numberOfGuesses);
+     } if(numberOfGuesses === 0){
+        numOfLosses++;
+        document.getElementById("loss").innerHTML = numOfLosses;
+        alert("You Lose!");
+        startNewHangManGame();
+        // return gameOver = true;
+      }
+}
+
+// Reset Hangman Board
+function startNewHangManGame() {
+  word = words[Math.floor(Math.random() * words.length)]
+  blanks = []
+  wrongGuess = [];
+  numberOfGuesses = 9;
+  gameOver = false;
+  for(j=0; j<word.length; j++){
+    blanks[j] = "_";
+    document.getElementById("guess").innerHTML = numberOfGuesses;
+
+    console.log(word + word.length)
+    console.log(blanks)
+  }
+  document.getElementById("text").innerHTML = blanks.join(" ")
+  document.getElementById("wrong").innerHTML = ""
+}
+
+</script>
+</body>
+</html>
